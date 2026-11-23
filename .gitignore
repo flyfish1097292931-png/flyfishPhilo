@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.env*
+private/
+notebooks/
+*.notebook.json
+flyfishPhilo-notebook*.json
+*.local.json
+artifacts/

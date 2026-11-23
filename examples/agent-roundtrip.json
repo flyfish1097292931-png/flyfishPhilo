@@ -1,0 +1,37 @@
+{
+  "context": {
+    "format": "flyfishPhilo/context-1",
+    "base": "96dc14287c687d71b47702027a2bddc34c538a584f774b7fcd817b3e092c642c",
+    "question": {
+      "id": "e1",
+      "text": "我不喜欢讨论，还是不喜欢被点名？"
+    },
+    "notes": [
+      {
+        "id": "e2",
+        "origin": "synthetic",
+        "text": "主持人从左边逐一点名。我把准备说的一句划掉，等散场才说给身边的人听。"
+      },
+      {
+        "id": "e3",
+        "origin": "synthetic",
+        "text": "同一个话题，我和两位读者在楼梯口说了很久。人数没有变成一个，我却没有急着走。"
+      }
+    ]
+  },
+  "proposal": {
+    "format": "flyfishPhilo/proposal-1",
+    "base": "96dc14287c687d71b47702027a2bddc34c538a584f774b7fcd817b3e092c642c",
+    "question": "e1",
+    "notes": [
+      "e2",
+      "e3"
+    ],
+    "kind": "reading",
+    "text": "公开点名与私下交谈，退出的代价不同。",
+    "scope": "这两个虚构场景，不代表稳定人格。",
+    "why": "同一个话题仍能在楼梯口继续。",
+    "rival": "可能是楼梯口的人更熟，而不只是发言次序不同。",
+    "test": "在同一组熟人里比较轮流点名与自愿发言。"
+  }
+}

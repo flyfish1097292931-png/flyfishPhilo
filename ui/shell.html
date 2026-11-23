@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <!--CSP-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>flyfishPhilo</title>
+  <!--STYLE-->
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="mast">
+    <div class="mast-inner">
+      <div class="brand">
+        <svg class="mark" width="35" height="35" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
+          <path class="mark-page" d="M5 7h12l3 3h11v18H19l-3-3H5z" />
+          <path class="mark-stitch" d="M7 12h7m-7 4h7m7-1h7m-7 4h7M17 7v17" />
+        </svg>
+        <span class="wordmark">flyfishPhilo</span>
+        <span class="mast-sub">哲学手记工作台</span>
+      </div>
+      <div class="mast-tools">
+        <span id="book-state" class="mast-state">仅在本页</span>
+        <button id="file-menu" class="btn small" type="button" hidden>手记文件</button>
+      </div>
+    </div>
+  </header>
+  <div id="notice" class="notice" role="status" aria-live="polite" aria-atomic="true"></div>
+  <main id="main" tabindex="-1">
+    <div id="desk"><p class="boot">正在打开工作台。</p></div>
+    <noscript><p>这份离线工作台需要浏览器启用 JavaScript。启用后重新打开，不需要联网。</p></noscript>
+  </main>
+  <footer class="colophon"><span>flyfishPhilo</span><span>没有账户，不自动保存，也不发送手记。</span></footer>
+  <dialog id="sheet" class="sheet" aria-labelledby="sheet-title">
+    <header class="dialog-head"><h2 id="sheet-title"></h2><button id="sheet-close" type="button" class="btn small">关闭</button></header>
+    <div id="sheet-body" class="dialog-body"></div>
+    <p id="sheet-error" class="error" role="alert" tabindex="-1" hidden></p>
+  </dialog>
+  <dialog id="guard" class="guard" aria-labelledby="guard-title" aria-describedby="guard-text">
+    <h2 id="guard-title"></h2>
+    <p id="guard-text"></p>
+    <div id="guard-actions" class="actions"></div>
+  </dialog>
+  <template id="choice-control"><select></select></template>
+  <!--SCRIPTS-->
+</body>
+</html>

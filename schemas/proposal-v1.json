@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:flyfishphilo:proposal:1",
+  "title": "Candidate only; cannot perform an action",
+  "type": "object", "additionalProperties": false,
+  "required": ["format", "base", "question", "notes", "kind", "text", "scope", "why", "rival", "test"],
+  "properties": {
+    "format": {"const": "flyfishPhilo/proposal-1"},
+    "base": {"type": "string", "minLength": 64, "maxLength": 64, "pattern": "^[0-9a-f]{64}$"},
+    "question": {"type": "string", "pattern": "^e[1-9][0-9]*$", "not": {"pattern": "[^e0-9]"}},
+    "notes": {
+      "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+      "description": "Copy all selected IDs from the context in their original order.",
+      "items": {"type": "string", "pattern": "^e[1-9][0-9]*$", "not": {"pattern": "[^e0-9]"}}
+    },
+    "kind": {"enum": ["reading", "claim", "practice"]},
+    "text":  {"type": "string", "minLength": 1, "maxLength": 6000, "pattern": "\\S"},
+    "scope": {"type": "string", "minLength": 1, "maxLength": 6000, "pattern": "\\S"},
+    "why":   {"type": "string", "minLength": 1, "maxLength": 6000, "pattern": "\\S"},
+    "rival": {"type": "string", "minLength": 1, "maxLength": 6000, "pattern": "\\S"},
+    "test":  {"type": "string", "minLength": 1, "maxLength": 6000, "pattern": "\\S"}
+  }
+}
