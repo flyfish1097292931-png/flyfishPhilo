@@ -104,6 +104,7 @@ def main(stage):
     canary='PRIVATE-DECLINE-'+secrets.token_hex(6);paused=human(db,restored,'我不知道，因为'+canary);assert paused['phase']=='paused' and paused['display'] is None
     expect_refusal(lambda:owner.run(db,'prepare',{'thread':thread})); assert canary.encode() not in db.read_bytes()
     invited=human(db,paused,'帮我整理一下');candidate=request_model(db,invited,'invited-candidate',receipts);assert candidate['display']['status']=='candidate'
+    assert not any(ch in candidate['display']['claim'] for ch in '?？') and candidate['display']['claim']!=fresh['display']
     assert all(e['quote'] in cp['answer'] for e in candidate['display']['evidence'])
     with closing(owner.core.Store(db)) as st: assert not st.call('philo_map',{})['positions']
     kept=human(db,candidate,'保留这一版')

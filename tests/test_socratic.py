@@ -124,6 +124,12 @@ class Socratic(unittest.TestCase):
         changed=self.op('candidate',x,**{**p,'scope':'只限这次投票'});held=self.reply(changed,'keep','保留这一版');self.assertEqual(held['phase'],'paused');self.assertEqual(self.s.call('philo_map',{})['positions'][0]['scope'],'只限这次投票')
         gone=self.reply(held,'withdraw','我不再采用这句话');self.assertIsNone(gone['position']);self.assertFalse(self.s.call('philo_map',{})['positions']);self.assertIn('keep',[e['kind'] for e in self.s.call('philo_read',{'thread':held['thread']})['history']]);
 
+    def test_invited_claim_is_a_statement_not_another_question(self):
+        a=self.answered(); d=self.reply(a,'distill','帮我整理一下'); old=d['rev']
+        with self.assertRaisesRegex(ValueError,'statement'):
+            self.op('candidate',d,**self.packet(d,claim='你怎么判断这道折痕是哪一班留下的？'))
+        self.assertEqual(self.s.call('philo_read',{'thread':d['thread']})['rev'],old)
+
     def test_unclear_evaluation_is_not_converted_to_keep(self):
         a=self.answered();d=self.reply(a,'distill','先帮我整理这次的想法');c=self.op('candidate',d,**self.packet(d))
         with self.assertRaisesRegex(ValueError,'明确选择'):

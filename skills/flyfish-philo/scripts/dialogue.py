@@ -231,6 +231,7 @@ class Store:
 
     def _candidate(self,s,a):
         require(s['phase']=='distilling','The person has not asked for distillation or an amendment.')
+        require(not any(c in a['claim'] for c in '?？'),'A candidate claim must be a tentative statement, not another question.')
         seen=set()
         for ref in a['evidence']:
             n=ref['turn'];q=ref['quote'];key=(n,q)
