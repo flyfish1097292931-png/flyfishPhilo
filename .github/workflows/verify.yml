@@ -1,4 +1,4 @@
-name: Portable workbench
+name: Portable Agent integration
 on: [push, pull_request]
 permissions:
   contents: read
@@ -17,8 +17,8 @@ jobs:
           node-version: '22'
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.9'
       - run: node --test
       - run: node tools/build.cjs --check
-      - run: python -m unittest discover -s tests -p test_*.py
+      - run: python -B -m unittest discover -s tests -p test_*.py
       - run: python tools/package.py --check

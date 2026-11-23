@@ -1,28 +1,28 @@
-# 用任意 AI 开始 / Start in any chat
+# 非持久的纯文本备用 / Non-persistent text fallback
 
-不需要安装工具。把下面的短笺复制给能处理文字的聊天模型，把方括号换成**你愿意分享**的内容。也可以把它当作纸上练习，跳过 AI。
-
-```text
-我在用 flyfishPhilo 整理一个问题。我只分享以下片段，请不要猜测未分享的经历。
-问题：[我为什么在有些讨论里不说话，却在散场后说了很多？]
-材料 A：[一件具体发生的事，或注明这是想象]
-材料 B：[可选：一次不同的情形]
-请先指出一个会改变判断的区分。给一个可能解释、另一个也说得通的解释，
-再说什么例子能把二者区分开。指明分别用了哪个片段，不必凑出结论。
-你可以说信息不足；我可以改问题、不答或到此为止。不要替我总结人格、采纳立场或安排任务。
-```
-
-收到回复后，只挑一句真正改变了问法的话。要留档，把它作为来源为 **AI 的解释** 的材料；不要标成亲历或本人立场。浏览器还可按已选片段生成带引用号的提示，支持 JSON 的模型可以返回可审阅的候选。
-
-**English copyable version**
+只有不支持 Agent Skills 或本地 MCP 的 AI 才需要这张卡片。它给出**当次对话**的一问一答约定；它无法跨新 session 恢复未答问题、不写入 local SQLite，也不是本项目的 Agent 集成路径。使用任意云端聊天时，该模型服务仍会接收你输入的全部文字。只分享你愿意交给它的内容。不需要使用任何私人手记。
 
 ```text
-I am using flyfishPhilo to think about one question: [question].
-A: [a scene I chose to share; mark fiction if applicable]. B: [optional contrast].
-Identify a distinction that changes the answer. Offer a possible reading, a competing
-reading, and a case that could distinguish them. Say which note supports which step.
-Insufficient information is a valid outcome. Do not infer a personality, accept a
-position for me, or turn an unanswered question into a task. Plain text is fine.
+请一次只问我一个问题，帮助我澄清下面这个问题。先不要总结。
+如果我回答，下一问必须接住我刚刚使用的原词，不要照抄预制问卷或自己回答。
+我可以说不知道、跳过、反问你、改题或停止；请把对话交还给我，不要劝我继续。
+在我明确说“帮我整理一下”之前，不要替我提炼原则或总结人格。
+如果我邀请整理，只基于我实际说过的话，提出一条仍待确认的候选理解；指出它的适用范围、一个竞争解释和可区分二者的观察。
+不要替我采纳观点、推断诊断、记录待办或采取外部行动。
+
+我想探的问题是：[写下一句你的问题]
 ```
 
-This is an interchange convention, not a system prompt that overrides a model’s own rules. Before pasting into any hosted service, consider its retention policy. No service is contacted by the workbench.
+## English fallback
+
+```text
+Ask one Socratic question at a time about this question. Wait for my reply.
+Anchor each follow-up in a meaningful phrase from what I just said; do not use a canned questionnaire or answer for me.
+I may not know, skip, ask you a question, reframe the topic, or stop. Yield the turn without trying to persuade me.
+Do not distill an idea before I explicitly say “help me distill this.” If I ask, offer one provisional, contestable reading grounded in my actual words; give its scope, one competing explanation, and an observation that could distinguish them.
+Do not adopt beliefs, diagnose me, save to a hidden memory, create tasks, or take external action.
+
+Question: [one sentence]
+```
+
+A text-only conversation cannot prove literal citations, keep the exact open question outside that chat, or enforce consent. Treat it as temporary dialogue, not as a backup notebook or durable claim store.

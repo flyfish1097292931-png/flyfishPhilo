@@ -1,43 +1,82 @@
 # flyfishPhilo
 
-**一本允许你改口的思想手记。** 把一次经历、一种解释和一条你愿意暂时采用的规则分开保存。也可以只留下问题，永远不回答它。
+**在 Agent 里一次只谈一个问题。答案来自你，候选也由你决定。**
 
-[English](docs/english.md) · [用任意 AI 开始](docs/any-chat.md) · [Agent 接口](docs/interop.md) · [方法说明](docs/method.md)
+`flyfishPhilo` 把一段苏格拉底式思想澄清嵌入你选择的 AI Agent：在你**明确同意本地保存**之后，它逐轮问和上一句有关的问题；你隔几天回来，Agent 可以从本地手记接着这一问。只有你实际回答的话能作证；只有你邀请整理时才起草候选；明确选择「保留这一版」才记录为暂时立场。
 
-## 三种用法，选一种即可
+这不是一个供你另开网页、再手动把内容交给 AI 的工作台。浏览器工具仍作为可选的独立本地界面保留；**核心用法发生在 Agent 对话里。**
 
-| 你现在有什么 | 怎样开始 |
-|---|---|
-| 一个浏览器 | [下载单文件工作台](https://raw.githubusercontent.com/flyfish1097292931-png/flyfishPhilo/main/index.html)（链接另存为 `flyfishPhilo.html`），双击即可；或下载仓库 ZIP 解压，打开 `index.html`。不用注册、安装或连接模型。 |
-| 一个只能聊天的 AI | 复制[一段纯文本短笺](docs/any-chat.md)，替换自己的问题和一两条愿意分享的材料。模型可以用散文回答，不需要支持工具、JSON 或 MCP。 |
-| 能处理 JSON 或调用本地工具的 Agent | 读[互操作协议](docs/interop.md)：选中片段 → 上下文包 → 候选提案。可用标准输入/输出或本地 MCP。无模型密钥，无厂商 SDK。 |
+## 你会感受到什么
 
-### 第一次打开，先看一个改口的瞬间
+1. 你：「我同意把本题和我的回答保存在本机手记中。我想一问一答地看看：为什么有些会议我有话却没说？」
+2. Agent：「你能想起最近一次想说又没说的时刻吗？」（一个问题；沿用你说过的话。）
+3. 你：「上周讨论方案时，主持人突然叫到我，我把已写好的一句删掉了。」
+4. Agent：「你说的『已写好的一句』，当时写的是什么？」句子里的「已写好的一句」就来自上一条回答。问完即停，你可以回问、跳过、换题，或者说到此为止。
+5. 只有你邀请整理时，Agent 才依据具体原话提出一条有适用范围、竞争解释和可区分情形的**候选**。你可以修改、暂时保留、撤回，或什么也不做。保留某一版不等于它就是真理或定义了你。
 
-进入虚构的读书会案例。主持人起初采用「以后不点名，只等举手」。一位新读者却写道：**我等了一晚上，怕举手插进熟人的话里。** 找到这张便笺，查看主持人撤回了哪条规则、哪条新规则仍有适用范围。再看另一个问题：「名义上可以拒绝，就有拒绝的自由吗？」这场读书会让问题变清楚了，却不足以替它作答。
+这五步是交谈契约，不是预填的剧情。你说「不知道」时，不追问为什么；你说「先停」时，开放问题会留在下次可选位置；你反问时，Agent 先回答你。
 
-不使用 JavaScript 的客户端也可以直接读取[同一份虚构工作簿（JSON）](examples/reading-circle.json)，无需运行样例生成器。注意区分这份可公开的合成资料和你自己导出的私有手记。
+## 直接和云端模型对话
 
-换成你自己的内容时，先写你记得的一幕。一个材料可以支撑多种解释；愿意采纳，也不等于它已经被证明。工作台分别保留出处、竞争解释、反例、修订和本人同意。**离开前下载 JSON 才能恢复；Markdown 是整本阅读稿，不是备份，也不是默认发送给 AI 的资料包。**
-
-## 边界
-
-- 浏览器端在内存里工作；不登记账户、不调用云模型、不自动保存或上传。下载的是明文。若主动把选中的文字复制给第三方，适用对方的数据政策。
-- 兼容性的共同下限是**能交换文字**，更强的能力按宿主选用。项目不宣称适配了世界上每一个产品、每种 MCP 传输或每一个模型版本。
-- AI 入口只能生成候选。采纳、撤回和是否试行由本人决定。公开的是方法和软件，不是飞鱼的日记、未发表思想或人格副本。详见[隐私与信任边界](docs/privacy.md)。
-
-## 开发与复现
-
-浏览器用户不需要 Node。开发／命令行用户需要 Node.js 22+；构建和测试无 npm 依赖。分发打包器另用 Python 3.9+ 标准库。
+在已配置 `OPENAI_API_KEY` 的终端，从本版源码目录运行：
 
 ```sh
-git clone https://github.com/flyfish1097292931-png/flyfishPhilo.git
-cd flyfishPhilo
-node --test
-node tools/build.cjs --check
-node tools/notebook.cjs demo | node tools/notebook.cjs read
+python3 skills/flyfish-philo/scripts/chat.py --store "$HOME/.local/share/flyfishPhilo/inquiry.sqlite3" --model gpt-6.2-astra --share-with-openai
 ```
 
-`src/` 是状态机和互操作协议；`ui/` 是界面；`examples/` 是全新虚构案例。修改源码后运行 `node tools/build.cjs` 重新生成单文件。欢迎提交让方法更清楚或协议更可移植的改进，见 [贡献说明](CONTRIBUTING.md)。分发的代码、文档和合成示例采用 [MIT](LICENSE)；私人工作簿不在许可范围内。
+程序先询问是否允许在这个文件里保存；`--share-with-openai` 另外允许把本题所需的少量文字交给 OpenAI。两种许可互不代替。回答一经输入，宿主先保存，再让模型拟下一问；只显示成功写入手记的问题。网络中断不会抹掉刚才的回答。下次在同一命令后加 `--thread` 和屏幕显示的话题 ID，继续同一题。正在用其他 Agent？见[接入说明](docs/agent-hosts.md)；有可信用户回调的宿主可直接使用相同接口。
 
-可选的整页验收（需已有 Python Playwright 和浏览器）：`python tests/browser_workbench.py chromium --channel chrome`，或指定 `firefox` / `webkit`。测试直接打开已构建的 `index.html`，断网执行选材、提案导入、撤回和真实文件下载。
+## 安装到已有 Agent
+
+要求：Python 3.9+；只依赖标准库。SQLite、Skill 和 MCP 不需要模型密钥；上面的远程对话示例另需本人有权使用的 OpenAI 模型与 API 凭据。不要把凭据写进命令、手记或 issue。
+
+**先选择谁能访问手记。** 每个 host 在自己的权限范围内运行 MCP 进程。把不同的人或 Agent 放在不同手记文件里。不要给公开网站、共享 Agent 或未知插件指向个人手记。数据库是明文，不是保险箱。
+
+从仓库根目录把 Agent Skill 复制到你**选择**的 Agent Skill 目录。安装脚本要求写明绝对目标路径；不会改 MCP 配置，也不会覆盖已有同名技能：
+
+从含 `skills/flyfish-philo/` 的本版源码目录执行。旧浏览器版不含这套 Agent 接口。
+
+```sh
+python3 tools/install_skill.py --target-dir "$HOME/.claude/skills"
+# 或只选你实际在用的：
+python3 tools/install_skill.py --target-dir "$HOME/.agents/skills"
+python3 tools/install_skill.py --target-dir "$HOME/.hermes/skills"
+```
+
+再将这一个本地 stdio MCP 服务**按所选 Agent 的配置方式显式注册**：命令是 `python3`，参数顺序是绝对的 `.../skills/flyfish-philo/scripts/philo.py --store /由本人选择的绝对路径/dialogue.sqlite3 mcp`。`docs/agent-hosts.md` 有对应的 Hermes、Claude Code 与 Codex 配置示例；每个平台配置不同，没有一个文件能自动修改或注册到所有 host。只读清单无需手记或存储文件：
+
+```sh
+python3 skills/flyfish-philo/scripts/philo.py tools
+```
+
+配置与退出重进后的复测见 [接入任意 Agent](docs/agent-hosts.md)。不希望把文件权限交给 agent 时，不要装本地 MCP；任何只收普通文字的 AI 可使用[不保存的纯文本提问短笺](docs/any-chat.md)，但它本身没有跨会话记忆。
+
+## 当前来源边界
+
+- 每个进行中的谈话**全局最多只有一个待答问题**。下一问须含有用户最近一次回答的原词；不能跳成与回答无关的预设问卷。
+- 回答原文保存在用户明确指定的本地文件中，不自动传给 Claude、OpenAI 或任意云端模型。MCP 会把所选本机话题提供给你正在使用的 Agent——若模型部署在云端，仍按该 Agent 服务商的数据政策处理。
+- 候选中每一句证据都必须能在该题实际记录的回答里逐字找到。Agent 的问题、它的解释和用户的回答不混为一类。
+- 「保留这一版」是一个可以撤回的个人选择；不让保留机制启动执行计划、记忆指令、风险评级或对外副作用。未保留的想法不自动改变其他问题。
+- 用户的回答、标签和同意都从不数字签名。一个不可信 Agent 若冒充用户，软件不能识破；因此默认推荐的 host 是本人控制的交谈式 Agent。
+
+**谁负责保存？** 在 `chat.py` 和接入用户回调的宿主中，保存由宿主负责；模型只提问或给候选。单独使用 MCP 的宿主则仍依赖模型实际调用工具。这两种保证不能互换。详见[云端验收与其他宿主的区别](docs/interop.md)。
+
+## 项目构成
+
+- `skills/flyfish-philo/SKILL.md`：可安装的 Agent Skill，告诉模型何时开始、每步如何回应、何时停止。
+- `skills/flyfish-philo/scripts/dialogue.py`：平台无关的对话状态机和本地持久层。
+- `skills/flyfish-philo/scripts/philo.py`：标准输入/输出 JSON 命令与可直接连接的 stdio MCP 服务。
+- `tools/install_skill.py`：复制一个 Skill；需要用户指定 agent 的技能目录，永不写入 host 配置。
+- `tests/`：逐轮、换进程恢复、权限、引用和安装边界回归。
+- `src/` 与 `ui/`：可选的独立研究工作台。它不接管 agent 中的对话协议或手记存储。
+
+运行测试：
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py'
+python3 -m compileall -q skills/flyfish-philo/scripts tools
+node --test
+node tools/build.cjs --check
+```
+
+[方法说明](docs/method.md) · [隐私与文件权限](docs/privacy.md) · [Agent 接入示例](docs/agent-hosts.md) · [协议实测](docs/interop.md) · [MIT](LICENSE) · [贡献规则](CONTRIBUTING.md)

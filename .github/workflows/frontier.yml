@@ -1,0 +1,61 @@
+name: Frontier dialogue (live, synthetic only)
+on:
+  push:
+    branches: ['verify/frontier-[0-9]*']
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: 'Number of a dedicated public synthetic verification issue in this repository'
+        required: true
+        type: string
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: frontier-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  FRONTIER_ISSUE: ${{ inputs.issue }}
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Take two live model turns and close the synthetic notebook
+        run: python3 -B tests/frontier_hosted.py first
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-checkpoint
+          path: |
+            ${{ runner.temp }}/philo-synthetic/fixture.sqlite3
+            ${{ runner.temp }}/philo-synthetic/checkpoint.json
+          retention-days: 1
+          if-no-files-found: error
+  fresh:
+    needs: first
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: synthetic-checkpoint
+          path: ${{ runner.temp }}/philo-synthetic
+      - name: Resume on another VM and exercise user authority
+        run: python3 -B tests/frontier_hosted.py fresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontier-evidence
+          path: ${{ runner.temp }}/philo-synthetic/public-evidence.json
+          if-no-files-found: error
+          retention-days: 30

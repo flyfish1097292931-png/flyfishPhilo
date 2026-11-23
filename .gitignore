@@ -9,3 +9,9 @@ notebooks/
 flyfishPhilo-notebook*.json
 *.local.json
 artifacts/
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-*
+*.sqlite3-*
+error.log
