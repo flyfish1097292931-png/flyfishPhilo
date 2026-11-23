@@ -6,6 +6,7 @@ CONTRIBUTING.md
 DIST_FILES.txt
 LICENSE
 README.md
+README.zh-CN.md
 docs/agent-hosts.md
 docs/any-chat.md
 docs/english.md
